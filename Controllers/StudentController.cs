@@ -95,7 +95,6 @@ namespace WebApStudentEnrolment.Controllers
 
 
         // POST: Students/Delete/5
-
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -107,7 +106,5 @@ namespace WebApStudentEnrolment.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
-
     }
 }

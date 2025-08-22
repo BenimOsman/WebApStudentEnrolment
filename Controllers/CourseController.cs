@@ -113,7 +113,5 @@ namespace WebApStudentEnrolment.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-
-        
     }
 }

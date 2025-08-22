@@ -10,10 +10,7 @@ namespace WebApStudentEnrolment.Repositories
         Task<IActionResult> AddEnrolment(Enrolment enrolment);
         Task<IActionResult> GetEnrolmentById(int enrolmentId);
         Task<IActionResult> GetAllEnrolments();
-        Task<IActionResult> UpdateEnrolment(int enrolmentId);
+        Task<IActionResult> UpdateEnrolment(Enrolment enrolment);
         Task<IActionResult> DeleteEnrolment(int enrolmentId);
-
-
-
     }
 }
