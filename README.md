@@ -78,5 +78,5 @@ Feel free to contribute or raise issues!
 
 ---
 
-**Author:** Syed Faisal  
+**Contributors:** Abdul Yesdani, Syed Faisal  
 **Date:** 23-08-2025
