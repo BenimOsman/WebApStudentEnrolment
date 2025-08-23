@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;                                            // Provides validation attributes like [Required], [Key], etc.
 
 namespace WebApStudentEnrolment.Models
 {
@@ -15,17 +15,23 @@ namespace WebApStudentEnrolment.Models
 
         [Required]
         public int Credits { get; set; }
-        public Course() { }
-        public Course(int id, string name, string description, int credits)
+        
+        public Course() { }                                                             // Parameterless constructor (required for EF Core)
+        
+        public Course(int id, string name, string description, int credits)             // Constructor to initialize all fields
         {
             Id = id;
             Name = name;
             Description = description;
             Credits = credits;
         }
+
+        // String representation of the course
+        /*
         public override string ToString()
         {
             return $"Id: {Id}, Name: {Name}, Description: {Description}, Credits: {Credits}";
         }
+        */
     }
 }

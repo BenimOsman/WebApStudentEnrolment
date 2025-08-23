@@ -2,7 +2,30 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mt-5">
+    <!-- Main welcome header -->
+    <h1 class="display-4">Welcome to Student Enrolment System</h1>
+
+    <!-- Subtext with link to Microsoft ASP.NET Core docs -->
+    <p class="lead">
+        Learn about <a href="https://learn.microsoft.com/aspnet/core" target="_blank" rel="noopener noreferrer" class="text-decoration-none">building Web apps with ASP.NET Core</a>.
+    </p>
+
+    <!-- Call to Action buttons for navigation -->
+    <div class="mt-4">
+        <a href="/Student" class="btn btn-primary btn-lg mx-2">View Students</a>
+        <a href="/Course" class="btn btn-success btn-lg mx-2">Browse Courses</a>
+        <a href="/Enrolment" class="btn btn-info btn-lg mx-2">Manage Enrolments</a>
+    </div>
+
+    <!-- Informational card about the system -->
+    <div class="card mt-5 mx-auto" style="max-width:600px;">
+        <div class="card-body">
+            <h5 class="card-title">About This System</h5>
+            <p class="card-text">
+                This application allows managing students, courses, and enrolments efficiently.
+                Navigate using the buttons above to get started.
+            </p>
+        </div>
+    </div>
 </div>

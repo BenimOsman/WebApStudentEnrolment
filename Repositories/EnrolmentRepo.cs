@@ -5,154 +5,86 @@ using WebApStudentEnrolment.Models;
 
 namespace WebApStudentEnrolment.Repositories
 {
-    public class EnrolmentRepo : IEnrolments
+    public class EnrolmentRepo : IEnrolments                                                // This class handles data operations related to Enrolments
     {
-        private readonly StudentEnrolmentContext _context;
+        private readonly StudentEnrolmentContext _context;                                  // Private readonly context to access the database
 
-        // ✅ Only one constructor that uses DI
-        public EnrolmentRepo(StudentEnrolmentContext context)
+        public EnrolmentRepo(StudentEnrolmentContext context)                               // Constructor to access DB context
         {
             _context = context;
         }
 
-        public int Count => _context.Enrolments.Count();
+        public int Count => _context.Enrolments.Count();                                    // Counts the total number of enrolments
 
-        public async Task<IActionResult> AddEnrolment(Enrolment enrolment)
+        public async Task<IActionResult> AddEnrolment(Enrolment enrolment)                  // Adds a new enrolment to the database
         {
-            await _context.Enrolments.AddAsync(enrolment);
-            await _context.SaveChangesAsync();
-            return new OkResult();
+            await _context.Enrolments.AddAsync(enrolment);                                  // Adds enrolment to the DbSet
+            await _context.SaveChangesAsync();                                              // Commits the change to DB
+            return new OkResult();                                                          // Returns 200 OK if successful
         }
 
-        public async Task<IActionResult> GetEnrolmentById(int enrolmentId)
+        public async Task<IActionResult> GetEnrolmentById(int enrolmentId)                  // Gets a specific enrolment by ID, including related Student and Course
         {
-            var enrolment = await _context.Enrolments
+            var enrolment = await _context.Enrolments                                       // Loads the related student and course entity
                 .Include(e => e.Student)
                 .Include(e => e.Course)
-                .FirstOrDefaultAsync(e => e.Id == enrolmentId);
+                .FirstOrDefaultAsync(e => e.Id == enrolmentId);                             // Finds enrolment by ID
 
             if (enrolment == null)
             {
                 return new NotFoundResult();
             }
 
-            return new OkObjectResult(enrolment);
+            return new OkObjectResult(enrolment);                                           // Returns the enrolment with 200 OK
         }
 
+        
         public async Task<IActionResult> GetAllEnrolments()
         {
-            var enrolments = await _context.Enrolments
+            var enrolments = await _context.Enrolments                                      // Returns the full list of enrolments
                 .Include(e => e.Student)
                 .Include(e => e.Course)
                 .ToListAsync();
 
-            return new OkObjectResult(enrolments);
+            return new OkObjectResult(enrolments);                                          // Returns 200 OK if successful
         }
 
-        public async Task<IActionResult> UpdateEnrolment(Enrolment enrolment)
+        public async Task<IActionResult> UpdateEnrolment(Enrolment enrolment)               // Updates an existing enrolment record
         {
-            var existingEnrolment = await _context.Enrolments.FindAsync(enrolment.Id);
+            var existingEnrolment = await _context.Enrolments.FindAsync(enrolment.Id);      // Find existing enrolment
             if (existingEnrolment == null)
             {
                 return new NotFoundResult();
             }
 
-            existingEnrolment.StudentId = enrolment.StudentId;
+            existingEnrolment.StudentId = enrolment.StudentId;                              // Updating the values
             existingEnrolment.CourseId = enrolment.CourseId;
             existingEnrolment.EnrolmentDate = enrolment.EnrolmentDate;
 
-            await _context.SaveChangesAsync();
-
+            await _context.SaveChangesAsync();                                              // Save changes to the DB
             return new OkResult();
         }
 
-
-        public async Task<IActionResult> DeleteEnrolment(int enrolmentId)
+        public async Task<IActionResult> DeleteEnrolment(int enrolmentId)                   // Deletes an enrolment by its ID
         {
-            var enrolment = await _context.Enrolments.FindAsync(enrolmentId);
+            var enrolment = await _context.Enrolments.FindAsync(enrolmentId);               // Find the enrolment
             if (enrolment == null)
             {
                 return new NotFoundResult();
             }
 
-            _context.Enrolments.Remove(enrolment);
-            await _context.SaveChangesAsync();
+            _context.Enrolments.Remove(enrolment);                                          // Mark enrolment for deletion
+            await _context.SaveChangesAsync();                                              // Commit to DB
             return new OkResult();
         }
     }
 }
 
-
 /*
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using WebApStudentEnrolment.Data;
-using WebApStudentEnrolment.Models;
-
-namespace WebApStudentEnrolment.Repositories
-{
-    public class EnrolmentRepo : IEnrolments
-    {
-        //public EnrolmentRepo() { }
-        private readonly StudentEnrolmentContext _context;
-        public EnrolmentRepo(StudentEnrolmentContext context)
-        {
-            _context = context;
-        }
-
-        public int Count { get; private set; }
-
-        public async Task<IActionResult> AddEnrolment(Enrolment enrolment)
-        {
-            // Implementation for adding an enrolment
-            await _context.Enrolments.AddAsync(enrolment);
-            await _context.SaveChangesAsync();
-            return new OkResult(); // Return an appropriate result, e.g., Ok or Created
-        }
-
-        public async Task<IActionResult> GetEnrolmentById(int enrolmentId)
-        {
-            // Implementation for retrieving an enrolment by ID
-            var enrolment = await _context.Enrolments.FindAsync(enrolmentId);
-            if (enrolment == null)
-            {
-                return new NotFoundResult(); // Return 404 if not found
-            }
-            return new OkObjectResult(enrolment); // Return the enrolment object
-        }
-
-        public async Task<IActionResult> GetAllEnrolments()
-        {
-            // Implementation for retrieving all enrolments
-            var enrolments = await _context.Enrolments.ToListAsync();
-            return new OkObjectResult(enrolments); // Return the list of enrolments
-        }
-
-        public async Task<IActionResult> UpdateEnrolment(int enrolmentId)
-        {
-            // Implementation for updating an enrolment
-            var existingEnrolment = await _context.Enrolments.FindAsync(enrolmentId);
-            if (existingEnrolment == null)
-            {
-                return new NotFoundResult(); // Return 404 if not found
-            }
-            // Update properties as needed
-            await _context.SaveChangesAsync();
-            return new OkResult(); // Return an appropriate result, e.g., Ok or NoContent
-        }
-
-        public async Task<IActionResult> DeleteEnrolment(int enrolmentId)
-        {
-            // Implementation for deleting an enrolment
-            var enrolment = await _context.Enrolments.FindAsync(enrolmentId);
-            if (enrolment == null)
-            {
-                return new NotFoundResult(); // Return 404 if not found
-            }
-            _context.Enrolments.Remove(enrolment);
-            await _context.SaveChangesAsync();
-            return new OkResult(); // Return an appropriate result, e.g., Ok or NoContent
-        }
-        }
-}
-*/
+ | Status Code                | Meaning          | When it's used                               |
+| --------------------------- | -----------------| -------------------------------------------- |
+| `200 OK`                    | Success          | Data fetched, saved, or updated successfully |
+| `404 Not Found`             | Resource missing | Item not found in the database               |
+| `500 Internal Server Error` | Server crash     | Unexpected error on the server               |
+| `400 Bad Request`           | Invalid input    | Client sent wrong or incomplete data         |
+ */

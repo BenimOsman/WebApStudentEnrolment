@@ -2,73 +2,68 @@
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using WebApStudentEnrolment.Data;
-
 using WebApStudentEnrolment.Models;
+
 namespace WebApStudentEnrolment.Repositories
 {
-    public class StudentRepo : IStudent
+    public class StudentRepo : IStudent                                 // This class implements the IStudent interface for managing student data.
+                                                                        // It provides methods to add, retrieve, update, and delete student records.
     {
-        // This class implements the IStudent interface for managing student data.
-        // It provides methods to add, retrieve, update, and delete student records.
-
-        private readonly StudentEnrolmentContext _context;
+        private readonly StudentEnrolmentContext _context;              // Private readonly context to access the database
 
         public StudentRepo() { }
-
-        public StudentRepo(StudentEnrolmentContext context)
+        public StudentRepo(StudentEnrolmentContext context)             // Constructor to access DB context
         {
             _context = context;
         }
-        public int Count { get; private set; }
 
-        public async Task AddStudent(Student student)
+        public int Count { get; private set; }                          // To count the number of students
+
+        // Method - 1
+        public async Task AddStudent(Student student)                   // Add a new student to the database
         {
-            // Implementation for adding a student
-            await _context.Students.AddAsync(student);
-            await _context.SaveChangesAsync();
-            
-            return; // Return an appropriate result, e.g., Ok or Created
-            
+            await _context.Students.AddAsync(student);                  // Add Student to DbSet
+            await _context.SaveChangesAsync();                          // Save changes to DB
+            return;                                                     // Return an appropriate result, e.g., Ok or Created
         }
 
-        public async Task<Student> GetStudentById(int studentId)
+        // Method - 2
+        public async Task<Student> GetStudentById(int studentId)        // Get a single student by their ID
         {
-            // Implementation for retrieving a student by ID
-            var student = await _context.Students.FindAsync(studentId);
+            var student = await _context.Students.FindAsync(studentId); // Get existing student
             if (student == null)
             {
-                return null; // Return null if not found
-                //return new NotFoundResult(); // Alternatively, you can return a NotFoundResult
+                return null;                                            // Return null if not found
             }
-             return student; // Return the student object
+             return student;                                            // Return the found student object
         }
 
-        public async Task<IEnumerable<Student>> GetAllStudents()
+        // Method - 3
+        public async Task<IEnumerable<Student>> GetAllStudents()        // Returns all students as a list
         {
-            // Implementation for retrieving all students
-            var students = await _context.Students.ToListAsync();
-            // Return the list of students
-            return students; // Return the list of students
+            var students = await _context.Students.ToListAsync();       // Retrieves all records
+            return students;                                            // Return the list of students
         }
 
-        public async Task UpdateStudent(int id, Student student)
+        // Method - 4
+        public async Task UpdateStudent(int id, Student student)        // Update student's information
         {
-            // Implementation for updating a student
-            var existingStudent = await _context.Students.FindAsync(id);
+            var existingStudent = await _context.Students.FindAsync(id);// Get existing student
             if (existingStudent == null)
             {
                 return;
-               // return new NotFoundResult(); // Return 404 if not found
             }
-            existingStudent.Name = student.Name;
+
+            existingStudent.Name = student.Name;                        // Updates individual fields
             existingStudent.Email = student.Email;
             existingStudent.Address = student.Address;
-            _context.Students.Update(existingStudent);
-            await _context.SaveChangesAsync();
+            _context.Students.Update(existingStudent);                  // Mark entity as modified
+            await _context.SaveChangesAsync();                          // Save changes to DB
             
         }
 
-       /* public async Task UpdateStudent(int id)
+        /*
+        public async Task UpdateStudent(int id)
         {
             // Implementation for updating a student by ID
             var student = await _context.Students.FindAsync(id);
@@ -76,25 +71,24 @@ namespace WebApStudentEnrolment.Repositories
             {
                 return;
             }
-            // Here you can update the student's properties as needed
-            // For example, student.Name = "New Name";
+
             _context.Students.Update(student);
             await _context.SaveChangesAsync();
             
-        }*/
+        }
+       */
 
-        public async Task DeleteStudent(int studentId)
+        // Method - 5 
+        public async Task DeleteStudent(int studentId)                  // Deletes a student by their ID
         {
-            // Implementation for deleting a student by ID
-            var student = await _context.Students.FindAsync(studentId);
+            var student = await _context.Students.FindAsync(studentId); // Locate student
             if (student == null)
             {
                 return; 
             }
-            _context.Students.Remove(student);
-            await _context.SaveChangesAsync();
-            
-        }
 
+            _context.Students.Remove(student);                          // Remove student           
+            await _context.SaveChangesAsync();                          // Update changes
+        }
     }
 }
