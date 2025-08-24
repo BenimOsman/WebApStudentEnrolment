@@ -28,7 +28,7 @@ namespace WebApStudentEnrolment.Controllers
             var student = await _studentRepo.GetStudentById(id);            // Get student by ID
             if (student == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return View(student);                                           // Show student details
         }
@@ -61,7 +61,7 @@ namespace WebApStudentEnrolment.Controllers
             var student = await _studentRepo.GetStudentById(id);            // Find student by ID
             if (student == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return View(student);                                           // Return student data to edit view
         }
@@ -83,7 +83,7 @@ namespace WebApStudentEnrolment.Controllers
                 return RedirectToAction(nameof(Index));                     // Redirect to list
             }
 
-            return View(student);
+            return View(student);                                           // Return to edit form if invalid
         }
 
         // GET: Students/Delete/5
@@ -93,7 +93,7 @@ namespace WebApStudentEnrolment.Controllers
             var student = await _studentRepo.GetStudentById(id);            // Find student
             if (student == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
             return View(student);                                           // Show confirmation page
         }

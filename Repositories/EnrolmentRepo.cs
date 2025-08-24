@@ -5,77 +5,75 @@ using WebApStudentEnrolment.Models;
 
 namespace WebApStudentEnrolment.Repositories
 {
-    public class EnrolmentRepo : IEnrolments                                                // This class handles data operations related to Enrolments
+    public class EnrolmentRepo : IEnrolments                                                    // Implements IEnrolments interface to manage enrolment data
     {
-        private readonly StudentEnrolmentContext _context;                                  // Private readonly context to access the database
+        private readonly StudentEnrolmentContext _context;                                      // Private readonly context to access the database
 
-        public EnrolmentRepo(StudentEnrolmentContext context)                               // Constructor to access DB context
+        public EnrolmentRepo() { }                                                              // Parameterless constructor
+        public EnrolmentRepo(StudentEnrolmentContext context)                                   // Constructor with dependency injection to access DB context
         {
             _context = context;
         }
 
-        public int Count => _context.Enrolments.Count();                                    // Counts the total number of enrolments
+        public int Count { get; private set; }                                                  // Tracks total number of enrolments (manual count)
 
-        public async Task<IActionResult> AddEnrolment(Enrolment enrolment)                  // Adds a new enrolment to the database
+        // Method - 1
+        public async Task<Enrolment> AddEnrolment(Enrolment enrolment)                          // Adds a new enrolment to the database
         {
-            await _context.Enrolments.AddAsync(enrolment);                                  // Adds enrolment to the DbSet
-            await _context.SaveChangesAsync();                                              // Commits the change to DB
-            return new OkResult();                                                          // Returns 200 OK if successful
+            await _context.Enrolments.AddAsync(enrolment);                                      // Add the enrolment to DbSet
+            await _context.SaveChangesAsync();                                                  // Save changes to the database
+            return enrolment;                                                                   // Return the added enrolment
         }
 
-        public async Task<IActionResult> GetEnrolmentById(int enrolmentId)                  // Gets a specific enrolment by ID, including related Student and Course
+        // Method - 2
+        public async Task<Enrolment> GetEnrolmentById(int enrolmentId)                          // Retrieves a specific enrolment by its ID
         {
-            var enrolment = await _context.Enrolments                                       // Loads the related student and course entity
-                .Include(e => e.Student)
-                .Include(e => e.Course)
-                .FirstOrDefaultAsync(e => e.Id == enrolmentId);                             // Finds enrolment by ID
+            return await _context.Enrolments                                            
+                            .Include(e => e.Student)
+                            .Include(e => e.Course)
+                            .FirstOrDefaultAsync(e => e.Id == enrolmentId);                     // Include related Student and Course entities for complete data
 
-            if (enrolment == null)
-            {
-                return new NotFoundResult();
-            }
-
-            return new OkObjectResult(enrolment);                                           // Returns the enrolment with 200 OK
         }
 
-        
-        public async Task<IActionResult> GetAllEnrolments()
+        // Method - 3
+        public async Task<IEnumerable<Enrolment>> GetAllEnrolments()                            // Retrieves all enrolments
         {
-            var enrolments = await _context.Enrolments                                      // Returns the full list of enrolments
-                .Include(e => e.Student)
-                .Include(e => e.Course)
-                .ToListAsync();
-
-            return new OkObjectResult(enrolments);                                          // Returns 200 OK if successful
+            // Include related Student and Course entities
+            return await _context.Enrolments
+                    .Include(e => e.Student)
+                    .Include(e => e.Course)
+                    .ToListAsync();                                                             // Return list of enrolments
         }
 
-        public async Task<IActionResult> UpdateEnrolment(Enrolment enrolment)               // Updates an existing enrolment record
+        // Method - 4
+        public async Task<Enrolment> UpdateEnrolment(int enrolmentId, Enrolment newenrol)       // Updates an existing enrolment
         {
-            var existingEnrolment = await _context.Enrolments.FindAsync(enrolment.Id);      // Find existing enrolment
+            var existingEnrolment = await _context.Enrolments.FindAsync(enrolmentId);           // Find existing enrolment
             if (existingEnrolment == null)
             {
-                return new NotFoundResult();
+                return existingEnrolment;                                                       // Return null if not found
             }
 
-            existingEnrolment.StudentId = enrolment.StudentId;                              // Updating the values
-            existingEnrolment.CourseId = enrolment.CourseId;
-            existingEnrolment.EnrolmentDate = enrolment.EnrolmentDate;
+            existingEnrolment.EnrolmentDate = newenrol.EnrolmentDate;                           // Update enrolment date
+            existingEnrolment.StudentId = newenrol.StudentId;                                   // Update student ID
+            existingEnrolment.CourseId = newenrol.CourseId;                                     // Update course ID
 
-            await _context.SaveChangesAsync();                                              // Save changes to the DB
-            return new OkResult();
+            await _context.SaveChangesAsync();                                                  // Save changes to the database
+            return existingEnrolment;                                                           // Return updated enrolment
         }
 
-        public async Task<IActionResult> DeleteEnrolment(int enrolmentId)                   // Deletes an enrolment by its ID
+        // Method - 5
+        public async Task<Enrolment> DeleteEnrolment(int enrolmentId)                           // Deletes an enrolment by its ID
         {
-            var enrolment = await _context.Enrolments.FindAsync(enrolmentId);               // Find the enrolment
+            var enrolment = await _context.Enrolments.FindAsync(enrolmentId);                   // Find the enrolment
             if (enrolment == null)
             {
-                return new NotFoundResult();
+                return enrolment;                                                               // Return null if not found
             }
 
-            _context.Enrolments.Remove(enrolment);                                          // Mark enrolment for deletion
-            await _context.SaveChangesAsync();                                              // Commit to DB
-            return new OkResult();
+            _context.Enrolments.Remove(enrolment);                                              // Remove enrolment from DbSet
+            await _context.SaveChangesAsync();                                                  // Commit deletion to database
+            return enrolment;                                                                   // Return deleted enrolment
         }
     }
 }

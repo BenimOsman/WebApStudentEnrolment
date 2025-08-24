@@ -1,31 +1,87 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Home Page"; 
 }
 
-<div class="text-center mt-5">
+<!-- Custom CSS for the homepage -->
+<style>
+    body {
+        background: #f5f7fa; 
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    }
+
+    .welcome-container {
+        text-align: center;
+        margin-top: 6rem; 
+    }
+
+    .welcome-container h1 {
+        font-weight: 700; 
+        color: #343a40; 
+        margin-bottom: 1rem; 
+    }
+
+       
+    .welcome-container p.lead {
+        font-size: 1.25rem; 
+        color: #6c757d; 
+    }
+
+    /* Custom button styling with hover effect */
+    .btn-custom {
+        transition: transform 0.2s, box-shadow 0.2s;                    /* Smooth hover animation */
+    }
+
+    .btn-custom:hover {
+        transform: translateY(-3px);                                    /* Lift button slightly on hover */
+        box-shadow: 0 6px 12px rgba(0,0,0,0.15);                      /* Add subtle shadow */
+    }
+
+    /* Card styling for informational section */
+    .info-card {
+        background-color: #ffffff; 
+        border-radius: 12px; 
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1); 
+        margin-top: 4rem; 
+        padding: 2rem; 
+        max-width: 650px; 
+        margin-left: auto; 
+        margin-right: auto;
+        transition: transform 0.3s; 
+    }
+
+    .info-card:hover {
+        transform: translateY(-5px); 
+        box-shadow: 0 12px 25px rgba(0,0,0,0.15); 
+    }
+
+    .btn-group-custom a {
+        min-width: 180px;
+    }
+</style>
+
+<!-- Main container for homepage content -->
+<div class="welcome-container">
     <!-- Main welcome header -->
     <h1 class="display-4">Welcome to Student Enrolment System</h1>
 
-    <!-- Subtext with link to Microsoft ASP.NET Core docs -->
+    <!-- Lead paragraph with link to ASP.NET Core documentation -->
     <p class="lead">
         Learn about <a href="https://learn.microsoft.com/aspnet/core" target="_blank" rel="noopener noreferrer" class="text-decoration-none">building Web apps with ASP.NET Core</a>.
     </p>
 
-    <!-- Call to Action buttons for navigation -->
-    <div class="mt-4">
-        <a href="/Student" class="btn btn-primary btn-lg mx-2">View Students</a>
-        <a href="/Course" class="btn btn-success btn-lg mx-2">Browse Courses</a>
-        <a href="/Enrolment" class="btn btn-info btn-lg mx-2">Manage Enrolments</a>
+    <!-- Navigation buttons to main modules -->
+    <div class="btn-group btn-group-lg btn-group-custom mt-4" role="group">
+        <a href="/Student" class="btn btn-primary btn-custom mx-2">View Students</a>   <!-- Navigate to Student page -->
+        <a href="/Course" class="btn btn-success btn-custom mx-2">Browse Courses</a>  <!-- Navigate to Courses page -->
+        <a href="/Enrolment" class="btn btn-info btn-custom mx-2">Manage Enrolments</a> <!-- Navigate to Enrolments page -->
     </div>
 
-    <!-- Informational card about the system -->
-    <div class="card mt-5 mx-auto" style="max-width:600px;">
-        <div class="card-body">
-            <h5 class="card-title">About This System</h5>
-            <p class="card-text">
-                This application allows managing students, courses, and enrolments efficiently.
-                Navigate using the buttons above to get started.
-            </p>
-        </div>
+    <!-- Information card providing context about the system -->
+    <div class="info-card mt-5 text-center">
+        <h5 class="card-title mb-3">About This System</h5>
+        <p class="card-text">
+            This application allows managing students, courses, and enrolments efficiently.
+            Navigate using the buttons above to get started.
+        </p>
     </div>
 </div>
