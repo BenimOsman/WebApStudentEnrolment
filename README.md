@@ -1,6 +1,6 @@
 # StudentWebProject
 
-Basic ASP.NET Core MVC project for managing students, courses, and enrolments.
+Basic ASP.NET Core MVC project for managing students, courses, and enrolments using Repository Pattern.
 
 ---
 
