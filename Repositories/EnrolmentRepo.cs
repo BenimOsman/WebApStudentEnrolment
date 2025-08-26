@@ -5,44 +5,43 @@ using WebApStudentEnrolment.Models;
 
 namespace WebApStudentEnrolment.Repositories
 {
-    public class EnrolmentRepo : IEnrolments                                                    // Implements IEnrolments interface to manage enrolment data
+    public class EnrolmentRepo : IEnrolments                                     // Implements IEnrolments interface to manage enrolment data
     {
-        private readonly StudentEnrolmentContext _context;                                      // Private readonly context to access the database
+        private readonly StudentEnrolmentContext _context;                       // Private readonly context to access the database
 
-        public EnrolmentRepo() { }                                                              // Parameterless constructor
-        public EnrolmentRepo(StudentEnrolmentContext context)                                   // Constructor with dependency injection to access DB context
+        public EnrolmentRepo() { }                                               // Parameterless constructor
+        public EnrolmentRepo(StudentEnrolmentContext context)                    // Constructor with dependency injection to access DB context
         {
             _context = context;
         }
 
-        public int Count { get; private set; }                                                  // Tracks total number of enrolments (manual count)
+        public int Count { get; private set; }                                   // Tracks total number of enrolments (manual count)
 
         // Method - 1
-        public async Task<Enrolment> AddEnrolment(Enrolment enrolment)                          // Adds a new enrolment to the database
+        public async Task<Enrolment> AddEnrolment(Enrolment enrolment)           // Adds a new enrolment to the database
         {
-            await _context.Enrolments.AddAsync(enrolment);                                      // Add the enrolment to DbSet
-            await _context.SaveChangesAsync();                                                  // Save changes to the database
-            return enrolment;                                                                   // Return the added enrolment
+            await _context.Enrolments.AddAsync(enrolment);                       // Add the enrolment to DbSet
+            await _context.SaveChangesAsync();                                   // Save changes to the database
+            return enrolment;                                                    // Return the added enrolment
         }
 
         // Method - 2
-        public async Task<Enrolment> GetEnrolmentById(int enrolmentId)                          // Retrieves a specific enrolment by its ID
+        public async Task<Enrolment> GetEnrolmentById(int enrolmentId)           // Retrieves a specific enrolment by its ID
         {
             return await _context.Enrolments                                            
                             .Include(e => e.Student)
                             .Include(e => e.Course)
-                            .FirstOrDefaultAsync(e => e.Id == enrolmentId);                     // Include related Student and Course entities for complete data
+                            .FirstOrDefaultAsync(e => e.Id == enrolmentId);      // Includes related Student and Course entities
 
         }
 
         // Method - 3
-        public async Task<IEnumerable<Enrolment>> GetAllEnrolments()                            // Retrieves all enrolments
+        public async Task<IEnumerable<Enrolment>> GetAllEnrolments()             // Retrieves all enrolments
         {
-            // Include related Student and Course entities
-            return await _context.Enrolments
+            return await _context.Enrolments                                     // Include related Student and Course entities
                     .Include(e => e.Student)
                     .Include(e => e.Course)
-                    .ToListAsync();                                                             // Return list of enrolments
+                    .ToListAsync();                                              // Return list of enrolments
         }
 
         // Method - 4
@@ -78,8 +77,10 @@ namespace WebApStudentEnrolment.Repositories
     }
 }
 
+
+
 /*
- | Status Code                | Meaning          | When it's used                               |
+|  Status Code                | Meaning          | When it's used                               |
 | --------------------------- | -----------------| -------------------------------------------- |
 | `200 OK`                    | Success          | Data fetched, saved, or updated successfully |
 | `404 Not Found`             | Resource missing | Item not found in the database               |

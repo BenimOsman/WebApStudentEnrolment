@@ -1,47 +1,109 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";  // Page title shown in browser tab
+    ViewData["Title"] = "Privacy Policy";
 }
 
-<!-- Main container for privacy content with inline styling -->
-<div style="max-width:800px; margin:50px auto; padding:20px; text-align:center; font-family:Arial, sans-serif;">
+<style>
+    .privacy-container {
+        max-width: 800px;   
+        margin: 50px auto;
+        padding: 20px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+    }
 
-    <!-- Page title with larger font -->
-    <h1 style="font-size:2.5rem; margin-bottom:30px; color:#343a40;">
+    .privacy-title {
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        color: #343a40;
+    }
+
+    .privacy-box {
+        background-color: #f8f9fa;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .privacy-text {
+        font-size: 1.1rem;
+        color: #495057;
+    }
+
+    .privacy-list {
+        text-align: left;
+        margin-top: 15px;
+        color: #495057;
+        font-size: 1rem;
+    }
+
+    .contact-section {
+        margin-top: 25px;
+        text-align: left;
+        font-size: 1rem;
+        color: #495057;
+    }
+
+        .contact-section h5 {
+            margin-bottom: 10px;
+            color: #343a40;
+        }
+
+        .contact-section a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+    .closing-note {
+        margin-top: 20px;
+        font-style: italic;
+        color: #6c757d;
+    }
+
+    .nav-buttons {
+        margin-top: 25px;
+    }
+
+        .nav-buttons a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+</style>
+
+<div class="privacy-container">
+    <h1 class="privacy-title">
         @ViewData["Title"]
     </h1>
 
-    <!-- Privacy card with light shadow and padding -->
-    <div style="background-color:#f8f9fa; padding:25px; border-radius:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-
-        <!-- Privacy information -->
-        <p style="font-size:1.1rem; color:#495057;">
+    <div class="privacy-box">
+        <p class="privacy-text">
             Your privacy is important to us. This page details how we collect, use, and protect your data while using the Student Enrolment System.
         </p>
 
-        <!-- List of key points -->
-        <ul style="text-align:left; margin-top:15px; color:#495057; font-size:1rem;">
+        <ul class="privacy-list">
             <li>We do not share your data with third parties.</li>
             <li>All data is securely stored in our database.</li>
             <li>You can request data deletion at any time.</li>
             <li>For more information, contact our support team.</li>
         </ul>
 
-        <!-- Contact Details Section -->
-        <div style="margin-top:25px; text-align:left; font-size:1rem; color:#495057;">
-            <h5 style="margin-bottom:10px; color:#343a40;">Contact Details</h5>
+        <div class="contact-section">
+            <h5>Contact Details</h5>
             <p><strong>Name:</strong> SYED FAISAL</p>
             <p><strong>Phone:</strong> 9893968787</p>
-            <p><strong>Email:</strong> <a href="mailto:hello.fsyedrx@ibm.com" style="color:#007bff; text-decoration:none;">hello.fsyedrx@ibm.com</a></p>
+            <p><strong>Email:</strong> <a href="mailto:hello.fsyedrx@ibm.com">hello.fsyedrx@ibm.com</a></p>
         </div>
 
-        <!-- Closing note -->
-        <p style="margin-top:20px; font-style:italic; color:#6c757d;">
+        <p class="closing-note">
             Thank you for trusting our system!
         </p>
 
-        <!-- Simple navigation buttons -->
-        <div style="margin-top:25px;">
-            <a href="/Home" style="display:inline-block; padding:10px 20px; margin:5px; background-color:#007bff; color:white; border-radius:5px; text-decoration:none;">Back to Home</a>
+        <div class="nav-buttons">
+            <a href="/Home">Back to Home</a>
         </div>
     </div>
 </div>

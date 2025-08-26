@@ -7,10 +7,10 @@ using WebApStudentEnrolment.Repositories;
 
 namespace WebApStudentEnrolment.Controllers
 {
-    public class EnrolmentController : Controller                                // This controller handles enrolment operations (Create, Read, Update, Delete)
+    public class EnrolmentController : Controller                 // This controller handles enrolment operations (Create, Read, Update, Delete)
     {
-        private readonly IEnrolments _enrollmentRepo;                            // Repository for enrolment data
-        private readonly StudentEnrolmentContext _context;                       // Context for accessing students and courses to populate dropdowns
+        private readonly IEnrolments _enrollmentRepo;             // Repository for enrolment data
+        private readonly StudentEnrolmentContext _context;        // Context for accessing students and courses to populate dropdowns
 
         // Constructor with dependency injection for the repository and context
         public EnrolmentController(IEnrolments enrollmentRepo, StudentEnrolmentContext context)
@@ -46,13 +46,13 @@ namespace WebApStudentEnrolment.Controllers
             // Populate dropdowns for selecting Student and Course
             ViewData["StudentId"] = new SelectList(_context.Students, "Id", "Name");
             ViewData["CourseId"] = new SelectList(_context.Courses, "Id", "Name");
-            return View();                                                      // Show empty form
+            return View();                                                      
         }
 
         // POST: Enrollments/Create
         // Handles form submission for new enrolment
         [HttpPost]
-        [ValidateAntiForgeryToken]                                              // Protect against CSRF
+        [ValidateAntiForgeryToken]                                              // Protect against CSRF - Cross-Site Request Forgery
         public async Task<IActionResult> Create([Bind("Id,StudentId,CourseId,EnrolmentDate")] Enrolment enrollment)
         {
             if (ModelState.IsValid)                                             // Validate form input
@@ -100,7 +100,7 @@ namespace WebApStudentEnrolment.Controllers
                 {
                     await _enrollmentRepo.UpdateEnrolment(id, enrolment);       // Update enrolment in database
                 }
-                catch (DbUpdateConcurrencyException)                             // Handle concurrency conflicts
+                catch (DbUpdateConcurrencyException)                            // Handle concurrency conflicts
                 {
                     if (await _enrollmentRepo.GetEnrolmentById(id) == null)     // Check if enrolment still exists
                     {
@@ -136,7 +136,7 @@ namespace WebApStudentEnrolment.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _enrollmentRepo.DeleteEnrolment(id);                           // Delete enrolment from database
-            return RedirectToAction(nameof(Index));                               // Redirect to list
+            return RedirectToAction(nameof(Index));                              // Redirect to list
         }
     }
 }
